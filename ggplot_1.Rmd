@@ -1,0 +1,98 @@
+---
+title: "R Visualization"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo=FALSE}
+
+```
+## ggplot2
+> visualization with **ggplot2** - mpg data
+
+- 그래프 요소  
+1. 데이터(data)  
+2. 기하학적 대상(geom)
+3. 시각적 대응 (aesthetics mapping)  
+
+
+### - geom_point()     
+- 시각적 특성 : 점
+
+```{r}
+library(ggplot2)
+data(mpg)
+ggplot(data=mpg, aes(x=displ,y=hwy)) + geom_point()
+```
+
+### - geom_line()  
+- 선으로 연결
+
+```{r}
+ggplot(data=mpg, aes(x=displ,y=hwy)) + geom_point() + geom_line()
+```
+```{r}
+ggplot(data=mpg, aes(x=displ,y=hwy)) + 
+  geom_point() + 
+  geom_line()+
+  geom_smooth(method='lm')
+``` 
+
+#### x,y열이 범주형이라 한 위치에 여러 점이 찍힐 수 있다.  
+- geom_jitter()을 이용하여 위치를 변경하거나 geom_boxplot(), geom_violin()으로 분포 시각화가 가능하다.
+```{r}
+# 자동차 연비 (1999-2008)
+a1 <- ggplot(mpg,aes(x=class, y=cty)) + geom_point()
+a2 <- ggplot(mpg,aes(x=class, y=cty)) + geom_jitter(width=0.2)
+a3 <- ggplot(mpg,aes(x=class, y=cty)) + geom_boxplot()
+a4 <- ggplot(mpg,aes(x=class, y=cty)) + geom_violin()
+gridExtra::grid.arrange(a1,a2,a3,a4,ncol=2)
+```
+
+#### 연속형 변수라면 히스토그램(histogram)이나 빈도 폴리곤(frequency polygons)으로 나타낼 수 있다.  
+-  bins : 구획의 갯수  
+-  binwidth : 구획의 길이  
+-  breaks : 구획의 시작점과 끝점  
+
+
+```{r}
+# 구간 갯수 30
+par(mfrow = c(1, 2))
+ggplot(data=mpg,aes(x=cty)) + geom_histogram(bins=30)
+ggplot(data=mpg,aes(x=cty)) + geom_freqpoly(bins=30)
+```
+
+```{r}
+# 구간 길이 5
+ggplot(data=mpg,aes(x=cty)) + geom_histogram(binwidth=5)
+ggplot(data=mpg,aes(x=cty)) + geom_freqpoly(binwidth=5)
+
+```
+
+
+```{r}
+a1 <- ggplot(data=mpg,aes(x=cty)) + geom_histogram(breaks=c(0,5,10,15:25,45))
+a2 <- ggplot(data=mpg,aes(x=cty)) + geom_freqpoly(breaks=c(0,5,10,15:25,45))
+a1;a2
+```
+
+```{r}
+ggplot(data=mpg, aes(x=class)) + geom_bar(col='blue',fill='red')
+```
+
+- 분포 또는 빈도가 하나의 변수로 저장되어 있다면 stat='identity' 또는 geom_col()
+
+```{r}
+dat <- table(mpg$class)
+df <- as.data.frame(dat)
+colnames(df) = c('name','n')
+print(head(df))
+
+ggplot(df, aes(x=name,y=n)) + geom_bar(stat='identity')
+ggplot(df, aes(x=name,y=n)) + geom_col()
+
+```
