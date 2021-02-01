@@ -32,7 +32,7 @@ decoded_review <- sapply(train_data[[1]],function(index){
 })
 decoded_review
 
-#### 2. 신경망에 넣기위한 데이터 변환
+#### 2. 신경망에 넣기 위한 데이터 변환
 
 # 정수 sequence -> Binary Matrix로 부호화
 vectorize_sequences <- function(sequences, dimension=10000) {
@@ -65,10 +65,11 @@ model %>% compile(
   loss ='binary_crossentropy',
   metrics = c('accuracy')
 )
-
 #######
+
+### 3.3 최적화기 구성
 model %>% compile(
-  optimizer = optimizer_rmsprop(lr=0.001), # 최적화기 구성
+  optimizer = optimizer_rmsprop(lr=0.001),
   loss ='binary_crossentropy',
   metrics = c('accuracy')
 )
@@ -80,7 +81,7 @@ model %>% compile(
 )
 #######
 
-### 3.3 validation set 설정
+### 3.4 validation set 설정
 val_indices <- 1:10000
 
 x_val <- x_train[val_indices,] # 기존 25000개중 10000개 (validation set)
@@ -99,9 +100,42 @@ model %>% compile(
 history <- model %>% fit(
   partial_x_train,
   partial_y_train,
-  epochs = 100,
+  epochs = 20,
   batch_size = 512,
   validation_data = list(x_val,y_val)
 )
+
+str(history)
+# $ params :List of 3
+# ..$ verbose: int 1
+# ..$ epochs : int 20
+# ..$ steps  : int 30
+# $ metrics:List of 4
+# ..$ loss        : num [1:20] 0.693 0.693 0.693 0.693 0.693 ...
+# ..$ accuracy    : num [1:20] 0.504 0.504 0.504 0.504 0.504 ...
+# ..$ val_loss    : num [1:20] 0.693 0.693 0.693 0.693 0.693 ...
+# ..$ val_accuracy: num [1:20] 0.495 0.495 0.495 0.495 0.495 ...
+# - attr(*, "class")= chr "keras_training_history"
+
 plot(history)
 
+#### 4. 모델 밑바닥부터 re-train
+
+model <- keras_model_sequential() %>% 
+  layer_dense(units=16, activation='relu',input_shape =c(10000)) %>% 
+  layer_dense(units=16, activation='relu') %>% 
+  layer_dense(units=1, activation='sigmoid') 
+
+model %>% compile(
+  optimizer = 'rmsprop',
+  loss ='binary_crossentropy',
+  metrics = c('accuracy')
+)
+
+model %>% fit(x_train, y_train, epochs=4, batch_size= 512)
+
+results <- model %>% evaluate(x_test,y_test)
+results
+
+#### 5. 신규 데이터 예측
+model %>% predict(x_test[1:10,])
