@@ -20,8 +20,8 @@ folds <- cut(1:length(indices),breaks=k,labels=F)
 validation_score <- c()
 for(i in 1:k) {
   validaiton_indices <- which(folds=i,arr.ind=T)
-  training_data <- data[-validaiont_indices]
-  validation_data <- data[validaiont_indices]
+  training_data <- data[-validaiontion_indices]
+  validation_data <- data[validaiontion_indices]
   
   model <- get_model()
   model %>% train(training_data)
