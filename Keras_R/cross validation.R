@@ -33,3 +33,9 @@ validation_score <- mean(validation_score)
 model <- get_model()
 model %>% train(data)
 results <- model %>% evaluate(test_data)
+
+
+
+
+
+
