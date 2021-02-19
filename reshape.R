@@ -25,7 +25,7 @@ wide <-reshape(Indometh,
                timevar ='time',idvar='Subject',
                direction='wide')
 reshape(wide,direction = 'long')
-
+l
 ### melt
 smiths
 #      subject time age weight height
