@@ -18,6 +18,7 @@ data('Indometh')
 str(Indometh)
 # conc ~ time | Subject >> time과 subject에 의해 conc 분류
 
+specific
 ### reshape
 Indometh
 wide <-reshape(Indometh,
