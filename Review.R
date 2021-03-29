@@ -78,7 +78,7 @@ tb3 %>% select(matches('^(.s|.{4})'))
 
 # dplyr vs 정규표현식
 tb %>% select(starts_with('c'))
-tb[, grep('^c',colnames(tb))]
+tb[, grep('^c',colnames(tb))]R
 
 tb %>% select(ends_with('p'))
 tb[, grep('p$',colnames(tb))]
@@ -102,5 +102,6 @@ tb2 <- tb %>% select(hp,cyl,qsec) %>% slice(1:3)
 tb2 %>% mutate(hp/cyl)
 
 tb2 %>% mutate(hpPerCyl = hp/cyl, V2 = hp*qsec)
+tb2
 
 
