@@ -52,11 +52,5 @@ melt(smiths, id=1:2,na.rm=T) # 기준변수를 1,2로
 cast(smithsm, subject+time ~variable)
 
 
-
-
-
-
-
-
 ### reshape2 package
 # 1. 
