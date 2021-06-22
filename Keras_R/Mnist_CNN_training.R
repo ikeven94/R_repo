@@ -44,10 +44,6 @@ model %>% fit(
   epochs = 5, batch_size=64
 )
 
-results <- model %>% evaluate(test_images, test_labels)
-results
-
-
 # Epoch 1/5
 # 938/938 [==============================] - 37s 39ms/step - loss: 0.1708 - accuracy: 0.9473
 # Epoch 2/5
@@ -58,3 +54,13 @@ results
 # 938/938 [==============================] - 42s 45ms/step - loss: 0.0244 - accuracy: 0.9925
 # Epoch 5/5
 # 938/938 [==============================] - 40s 42ms/step - loss: 0.0197 - accuracy: 0.9937
+
+results <- model %>% evaluate(test_images, test_labels)
+
+# 313/313 [==============================] - 2s 6ms/step - loss: 0.0276 - accuracy: 0.9915
+
+results
+# loss   accuracy 
+# 0.02763571 0.99150002 
+
+
